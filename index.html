@@ -20,7 +20,9 @@
       --amber: #f59e0b;
       --red: #ef4444;
     }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background: var(--bg);
@@ -30,21 +32,25 @@
       margin: 0 auto;
       -webkit-tap-highlight-color: transparent;
     }
+
     .header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 14px;
     }
+
     .user-title {
       font-size: 1.05rem;
       font-weight: 700;
     }
+
     .sub-status {
       font-size: 0.76rem;
       color: var(--muted);
       margin-top: 2px;
     }
+
     .btn {
       background: var(--card);
       color: var(--text);
@@ -55,15 +61,16 @@
       font-weight: 600;
       cursor: pointer;
     }
+
     .btn:active { transform: scale(0.96); }
 
-    /* 3 БОЛЬШИХ ЧИСЛА СВЕРХУ */
     .hero-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 10px;
       margin-bottom: 18px;
     }
+
     .hero-card {
       background: linear-gradient(160deg, #192338 0%, #111827 100%);
       border: 1px solid var(--card-border);
@@ -72,6 +79,7 @@
       text-align: center;
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
     }
+
     .hero-value {
       font-size: 3.1rem;
       font-weight: 800;
@@ -79,9 +87,11 @@
       letter-spacing: -1.5px;
       margin-bottom: 6px;
     }
+
     .hero-value.rank { color: var(--accent); }
     .hero-value.group-rank { color: var(--purple); }
     .hero-value.solved { color: var(--green); }
+
     .hero-label {
       font-size: 0.72rem;
       font-weight: 700;
@@ -89,6 +99,7 @@
       text-transform: uppercase;
       letter-spacing: 0.4px;
     }
+
     .hero-meta {
       font-size: 0.68rem;
       color: var(--muted);
@@ -104,18 +115,19 @@
       margin-bottom: 10px;
     }
 
-    /* КАРТОЧКИ КОНТЕСТОВ */
     .contest-list {
       display: flex;
       flex-direction: column;
       gap: 12px;
     }
+
     .contest-card {
       background: var(--card);
       border: 1px solid var(--card-border);
       border-radius: 16px;
       padding: 15px;
     }
+
     .contest-top {
       display: flex;
       justify-content: space-between;
@@ -123,17 +135,20 @@
       gap: 10px;
       margin-bottom: 10px;
     }
+
     .contest-name {
       font-size: 1rem;
       font-weight: 700;
       line-height: 1.3;
     }
+
     .contest-id-tag {
       font-size: 0.73rem;
       color: var(--muted);
       font-weight: 500;
       margin-top: 2px;
     }
+
     .contest-badge {
       background: rgba(56, 189, 248, 0.12);
       color: var(--accent);
@@ -143,6 +158,7 @@
       border-radius: 999px;
       white-space: nowrap;
     }
+
     .contest-badge.done {
       background: rgba(34, 197, 94, 0.15);
       color: var(--green);
@@ -156,6 +172,7 @@
       overflow: hidden;
       margin-bottom: 12px;
     }
+
     .progress-fill {
       height: 100%;
       background: linear-gradient(90deg, var(--accent), var(--green));
@@ -163,7 +180,6 @@
       transition: width 0.3s ease;
     }
 
-    /* БЛОК РЕКОМЕНДАЦИИ ЗАДАЧИ */
     .next-box {
       background: rgba(11, 15, 25, 0.7);
       border: 1px solid var(--card-border);
@@ -171,31 +187,34 @@
       padding: 10px 12px;
       margin-bottom: 12px;
     }
+
     .next-primary {
       font-size: 0.88rem;
       font-weight: 700;
       color: var(--amber);
       line-height: 1.35;
     }
+
     .next-secondary {
       font-size: 0.8rem;
       color: var(--muted);
       margin-top: 5px;
       line-height: 1.3;
     }
+
     .all-done {
       font-size: 0.88rem;
       color: var(--green);
       font-weight: 700;
     }
 
-    /* ПЛИТКИ ЗАДАЧ */
     .prob-pills {
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
       margin-bottom: 12px;
     }
+
     .pill {
       font-size: 0.74rem;
       font-weight: 700;
@@ -205,16 +224,19 @@
       color: var(--muted);
       border: 1px solid var(--card-border);
     }
+
     .pill.ac {
       background: rgba(34, 197, 94, 0.15);
       color: var(--green);
       border-color: rgba(34, 197, 94, 0.4);
     }
+
     .pill.wa {
       background: rgba(239, 68, 68, 0.12);
       color: #fca5a5;
       border-color: rgba(239, 68, 68, 0.35);
     }
+
     .pill.next-target {
       border-color: var(--amber);
       color: var(--amber);
@@ -234,7 +256,21 @@
       font-size: 0.84rem;
       font-weight: 600;
     }
+
     .contest-link:active { opacity: 0.75; }
+
+    .debug-box {
+      margin-top: 16px;
+      padding: 10px;
+      border-radius: 10px;
+      background: rgba(239, 68, 68, 0.08);
+      border: 1px solid rgba(239, 68, 68, 0.25);
+      color: #fca5a5;
+      font-size: 0.78rem;
+      line-height: 1.35;
+      word-break: break-word;
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -247,313 +283,360 @@
     <button class="btn" onclick="loadStandings()">↻ Обновить</button>
   </div>
 
-  <!-- 3 БОЛЬШИХ ЧИСЛА -->
   <div class="hero-grid">
     <div class="hero-card">
-      <div class="hero-value rank" id="rankVal">31</div>
+      <div class="hero-value rank" id="rankVal">—</div>
       <div class="hero-label">Общее место</div>
-      <div class="hero-meta" id="totalUsersMeta">Из 330 чел.</div>
+      <div class="hero-meta" id="totalUsersMeta">Из — чел.</div>
     </div>
+
     <div class="hero-card">
-      <div class="hero-value group-rank" id="groupRankVal">12</div>
-      <div class="hero-label" id="groupLabel">Место в гр. b</div>
-      <div class="hero-meta" id="groupUsersMeta">Из 262 чел.</div>
+      <div class="hero-value group-rank" id="groupRankVal">—</div>
+      <div class="hero-label" id="groupLabel">Место в группе</div>
+      <div class="hero-meta" id="groupUsersMeta">Из — чел.</div>
     </div>
+
     <div class="hero-card">
-      <div class="hero-value solved" id="solvedVal">45</div>
+      <div class="hero-value solved" id="solvedVal">—</div>
       <div class="hero-label">Решено</div>
-      <div class="hero-meta" id="penaltyMeta">Штраф: 33</div>
+      <div class="hero-meta" id="penaltyMeta">Штраф: —</div>
     </div>
   </div>
 
-  <div class="section-title" id="contestsHeader">Контесты (6)</div>
+  <div class="section-title" id="contestsHeader">Контесты</div>
   <div class="contest-list" id="contestList"></div>
+
+  <div class="debug-box" id="debugBox"></div>
 
   <script>
     const TARGET_NAME = "Конников Вячеслав";
-    const STANDINGS_URL = "https://algocode.ru/standings/b_fall_2026/";
-    const BASE_CONTEST_ID = 83001; // ./0/ -> 83001, ./5/ -> 83006 и т.д.
-    const STORAGE_KEY = "algocode_b_fall_2026_cache_v2";
-
-    const PROXIES = [
-  (url) => `https://corsproxy.io/?url=${encodeURIComponent(url)}`,
-  (url) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
-  (url) => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,
-  (url) => `https://proxy.cors.sh/${url}`,
-  (url) => `https://thingproxy.freeboard.io/fetch/${url}`
-];
-
-async function fetchWithTimeout(url, timeoutMs = 12000) {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), timeoutMs);
-
-  try {
-    const res = await fetch(url, {
-      signal: controller.signal,
-      cache: "no-store"
-    });
-
-    if (!res.ok) {
-      throw new Error(`HTTP ${res.status}`);
+    const STANDINGS_JSON_URL = "https://algocode.ru/standings_data/b_fall_2026";
+    const BASE_CONTEST_ID = 83001;
+    const STORAGE_KEY = "algocode_b_fall_2026_json_v1";
+    const REQUEST_TIMEOUT_MS = 15000;
+  
+    const APPS_SCRIPT_URL =
+      "https://script.google.com/macros/s/AKfycbzCirmTGsQQBQXv69gzcHG9nfoubVgkgnpPCzAYIWGJi84IlYO77Sih-9GntgsgbtcU/exec";
+  
+    const statusEl = document.getElementById("statusText");
+    const debugBox = document.getElementById("debugBox");
+  
+    function setStatus(text) {
+      statusEl.textContent = text;
     }
-
-    return await res.text();
-  } finally {
-    clearTimeout(timer);
-  }
-}
-
-async function fetchHtmlWithFallback(targetUrl) {
-  const bustUrl = targetUrl + (targetUrl.includes("?") ? "&" : "?") + "_t=" + Date.now();
-  const errors = [];
-
-  for (const makeProxy of PROXIES) {
-    const proxyUrl = makeProxy(bustUrl);
-
-    try {
-      const text = await fetchWithTimeout(proxyUrl);
-
-      if (text && text.includes("standings")) {
-        return text;
+  
+    function showDebug(title, details) {
+      debugBox.style.display = "block";
+      debugBox.innerHTML = `<b>${title}</b><br>${details}`;
+    }
+  
+    function hideDebug() {
+      debugBox.style.display = "none";
+      debugBox.innerHTML = "";
+    }
+  
+    async function fetchJson() {
+      const proxyUrl =
+        APPS_SCRIPT_URL +
+        "?url=" +
+        encodeURIComponent(STANDINGS_JSON_URL);
+  
+      setStatus("Загружаю данные через Apps Script...");
+  
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+  
+      try {
+        const response = await fetch(proxyUrl, {
+          signal: controller.signal,
+          cache: "no-store"
+        });
+  
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+  
+        const text = await response.text();
+  
+        try {
+          return JSON.parse(text);
+        } catch (error) {
+          throw new Error(
+            "Apps Script вернул не JSON. Начало ответа: " +
+            text.slice(0, 200)
+          );
+        }
+      } finally {
+        clearTimeout(timer);
       }
-
-      errors.push(new Error("Пустой/неподходящий ответ от прокси"));
-    } catch (e) {
-      console.warn("Прокси не ответил:", proxyUrl, e);
-      errors.push(e);
     }
-  }
-
-  throw new Error(
-    "Не удалось получить таблицу через прокси. " +
-    errors.map((e) => e.message).join(" | ")
-  );
-}
-
-    function parseStandingsHtml(html) {
-      const doc = new DOMParser().parseFromString(html, "text/html");
-      const mainTable = doc.querySelector("table#standings");
-      if (!mainTable) throw new Error("Таблица #standings не найдена");
-
-      const allRows = Array.from(mainTable.querySelectorAll("tr"));
-      const titleRowIdx = allRows.findIndex((tr) => tr.querySelector("td.contest_title"));
-      if (titleRowIdx === -1) throw new Error("Не найдена шапка контестов");
-
-      const headerRow0 = Array.from(allRows[titleRowIdx].querySelectorAll("td, th"));
-const headerRow1 = Array.from(allRows[titleRowIdx + 1]?.querySelectorAll("td, th") || []);
-
-let fixedColsCount = 0;
-let seenContest = false;
-const rawContests = [];
-
-for (const cell of headerRow0) {
-  const colspan = parseInt(cell.getAttribute("colspan") || "1", 10) || 1;
-
-  if (cell.classList.contains("contest_title")) {
-    seenContest = true;
-
-    const title = cell.textContent.replace(/\s+/g, " ").trim();
-    const href = cell.querySelector("a")?.getAttribute("href") || "";
-    const match = href.match(/(\d{4,})\/?$/);
-    const contestNumber = match ? parseInt(match[1], 10) : null;
-
-    rawContests.push({
-      title,
-      colspan,
-      contestNumber
-    });
-  } else if (!seenContest) {
-    fixedColsCount += colspan;
-  }
-}
-
-if (!rawContests.length) {
-  throw new Error("Не найдены контесты в шапке таблицы");
-}
-
-if (fixedColsCount === 0) {
-  fixedColsCount = 5;
-}
-
-      const totalTaskCols = headerRow1.length;
-      const colMeta = headerRow1.map((cell) => {
-        const label = cell.textContent.trim();
-        const probTitle = (cell.getAttribute("title") || "").trim();
-        return {
-          label,
-          probTitle,
-          isSummary: label === "Σ"
-        };
+  
+    function parseStandingsJson(data) {
+      if (!data || !Array.isArray(data.users) || !Array.isArray(data.contests)) {
+        throw new Error("В JSON нет массивов users или contests");
+      }
+  
+      const users = data.users;
+      const contests = data.contests;
+  
+      if (!users.length || !contests.length) {
+        throw new Error("JSON пустой: нет пользователей или контестов");
+      }
+  
+      // Считаем балл, штраф и статистику по каждой задаче.
+      const problemStats = contests.map((contest) => {
+        return contest.problems.map(() => ({
+          solvedCount: 0
+        }));
       });
-
-      const solvedCounts = new Array(totalTaskCols).fill(0);
-      const groupTotals = {};
-      let myStats = null;
-      let myCells = [];
-      let totalParticipants = 0;
-
-      for (const tr of allRows) {
-        if (tr.querySelector("td.contest_title") || tr.querySelector("td.problem_letter")) {
-          continue;
-        }
-        const cells = Array.from(tr.querySelectorAll("td"));
-        if (cells.length < fixedColsCount) continue;
-
-        const rankText = cells[0]?.textContent.trim();
-        if (!/^\d+$/.test(rankText)) continue;
-
-        totalParticipants++;
-
-        const group = cells[1]?.textContent.trim() || "?";
-        const name = cells[2]?.textContent.replace(/\s+/g, " ").trim();
-        const solved = cells[3]?.textContent.trim();
-        const penalty = cells[4]?.textContent.trim();
-
-        // Считаем сколько человек уже встретилось в каждой подгруппе (b / B)
-        groupTotals[group] = (groupTotals[group] || 0) + 1;
-
-        const isMe = name.toLowerCase().includes(TARGET_NAME.toLowerCase());
-        if (isMe) {
-          myStats = {
-            rank: rankText,
-            group,
-            groupRank: groupTotals[group], // Порядковый номер внутри своей группы
-            name,
-            solved,
-            penalty
-          };
-        }
-
-        for (let c = 0; c < totalTaskCols; c++) {
-          const td = cells[fixedColsCount + c];
-          if (!td) continue;
-          const isOk = td.classList.contains("ok");
-          if (isOk) solvedCounts[c]++;
-
-          if (isMe) {
-            myCells[c] = {
-              ok: isOk,
-              bad: td.classList.contains("bad") || td.classList.contains("ban"),
-              rawText: td.textContent.trim()
-            };
-          }
-        }
-      }
-
-      if (myStats) {
-        myStats.groupTotal = groupTotals[myStats.group] || 0;
-      }
-
-      const numContests = rawContests.length;
-      const contests = [];
-      let cursor = 0;
-
-      for (let i = 0; i < numContests; i++) {
-        const rc = rawContests[i];
-        const contestId = rc.contestNumber !== null
-        ? rc.contestNumber
-        : BASE_CONTEST_ID + (numContests - 1 - i);
-
-        const problems = [];
-        for (let k = 0; k < rc.colspan && cursor < totalTaskCols; k++, cursor++) {
-          const meta = colMeta[cursor];
-          if (meta.isSummary) continue;
-
-          const myCell = myCells[cursor] || { ok: false, bad: false, rawText: "" };
-          problems.push({
-            label: meta.label,
-            title: meta.probTitle,
-            solvedByMe: myCell.ok,
-            attemptedByMe: myCell.bad,
-            myText: myCell.rawText,
-            totalSolves: solvedCounts[cursor]
+  
+      users.forEach((user) => {
+        let totalScore = 0;
+        let totalPenalty = 0;
+  
+        contests.forEach((contest, contestIndex) => {
+          const results = contest.users[user.id] || [];
+  
+          contest.problems.forEach((problem, problemIndex) => {
+            const result = results[problemIndex];
+  
+            if (!result) {
+              return;
+            }
+  
+            const score = Number(result.score) || 0;
+            const penalty = Number(result.penalty) || 0;
+  
+            totalScore += score;
+  
+            if (score !== 0) {
+              totalPenalty += penalty;
+            }
+  
+            if (score > 0) {
+              problemStats[contestIndex][problemIndex].solvedCount++;
+            }
           });
+        });
+  
+        user.totalScore = totalScore;
+        user.totalPenalty = totalPenalty;
+      });
+  
+      // Общий рейтинг: больше баллов — выше; при равенстве меньше штраф — выше.
+      const sortedUsers = [...users].sort((a, b) => {
+        if (b.totalScore !== a.totalScore) {
+          return b.totalScore - a.totalScore;
         }
-
-        contests.push({
-          title: rc.title,
+  
+        if (a.totalPenalty !== b.totalPenalty) {
+          return a.totalPenalty - b.totalPenalty;
+        }
+  
+        return String(a.name).localeCompare(String(b.name));
+      });
+  
+      sortedUsers.forEach((user, index) => {
+        user.overallRank = index + 1;
+      });
+  
+      // Рейтинг внутри каждой группы.
+      const groups = {};
+  
+      sortedUsers.forEach((user) => {
+        const group = user.group_short || "?";
+  
+        if (!groups[group]) {
+          groups[group] = [];
+        }
+  
+        groups[group].push(user);
+      });
+  
+      Object.values(groups).forEach((groupUsers) => {
+        groupUsers.forEach((user, index) => {
+          user.groupRank = index + 1;
+        });
+  
+        groupUsers.forEach((user) => {
+          user.groupTotal = groupUsers.length;
+        });
+      });
+  
+      // Ищем тебя.
+      const me = users.find((user) =>
+        String(user.name || "")
+          .toLowerCase()
+          .includes(TARGET_NAME.toLowerCase())
+      );
+  
+      if (!me) {
+        throw new Error(`Участник «${TARGET_NAME}» не найден в JSON`);
+      }
+  
+      // Собираем контесты для интерфейса.
+      const parsedContests = contests.map((contest, contestIndex) => {
+        const myResults = contest.users[me.id] || [];
+        const contestId =
+          BASE_CONTEST_ID + (contests.length - 1 - contestIndex);
+  
+        const problems = contest.problems.map((problem, problemIndex) => {
+          const result = myResults[problemIndex] || {};
+          const score = Number(result.score) || 0;
+          const penalty = Number(result.penalty) || 0;
+  
+          return {
+            label: problem.short || String.fromCharCode(65 + problemIndex),
+            title: problem.long || "",
+            solvedByMe: score > 0,
+            attemptedByMe:
+              score === 0 &&
+              (
+                penalty > 0 ||
+                result.verdict === "RJ" ||
+                result.verdict === "IG" ||
+                result.verdict === "PR" ||
+                result.verdict === "AC" ||
+                result.verdict === "SM" ||
+                result.verdict === "SV" ||
+                result.verdict === "DQ"
+              ),
+            totalSolves: problemStats[contestIndex][problemIndex].solvedCount
+          };
+        });
+  
+        return {
+          title: contest.title || `Контест ${contestIndex + 1}`,
           contestId,
           problems
-        });
-      }
-
-      return { myStats, totalParticipants, contests, updatedAt: Date.now() };
+        };
+      });
+  
+      return {
+        myStats: {
+          rank: me.overallRank,
+          group: me.group_short || "?",
+          groupRank: me.groupRank,
+          groupTotal: me.groupTotal,
+          solved: me.totalScore,
+          penalty: me.totalPenalty
+        },
+        totalParticipants: users.length,
+        contests: parsedContests,
+        updatedAt: Date.now()
+      };
     }
-
+  
     function renderDashboard(data) {
       if (data.myStats) {
         document.getElementById("rankVal").textContent = data.myStats.rank;
-        document.getElementById("totalUsersMeta").textContent = `Из ${data.totalParticipants} чел.`;
-
-        document.getElementById("groupRankVal").textContent = data.myStats.groupRank || "-";
-        document.getElementById("groupLabel").textContent = `Место в гр. ${data.myStats.group}`;
+        document.getElementById("totalUsersMeta").textContent =
+          `Из ${data.totalParticipants} чел.`;
+  
+        document.getElementById("groupRankVal").textContent =
+          data.myStats.groupRank || "—";
+  
+        document.getElementById("groupLabel").textContent =
+          `Место в гр. ${data.myStats.group}`;
+  
         document.getElementById("groupUsersMeta").textContent =
-          data.myStats.groupTotal ? `Из ${data.myStats.groupTotal} чел.` : "";
-
+          data.myStats.groupTotal
+            ? `Из ${data.myStats.groupTotal} чел.`
+            : "Из — чел.";
+  
         document.getElementById("solvedVal").textContent = data.myStats.solved;
-        document.getElementById("penaltyMeta").textContent = `Штраф: ${data.myStats.penalty}`;
+        document.getElementById("penaltyMeta").textContent =
+          `Штраф: ${data.myStats.penalty}`;
       }
-
+  
       const contests = data.contests || [];
-      document.getElementById("contestsHeader").textContent = `Контесты (${contests.length})`;
-
+      document.getElementById("contestsHeader").textContent =
+        `Контесты (${contests.length})`;
+  
       const container = document.getElementById("contestList");
       container.innerHTML = "";
-
+  
       contests.forEach((contest) => {
-        const totalProbs = contest.problems.length;
-        const mySolvedProbs = contest.problems.filter((p) => p.solvedByMe).length;
-        const percent = totalProbs > 0 ? Math.round((mySolvedProbs / totalProbs) * 100) : 0;
-
+        const totalProblems = contest.problems.length;
+        const solvedProblems = contest.problems.filter(
+          (problem) => problem.solvedByMe
+        ).length;
+  
+        const percent = totalProblems
+          ? Math.round((solvedProblems / totalProblems) * 100)
+          : 0;
+  
         const unsolved = contest.problems
-          .filter((p) => !p.solvedByMe)
+          .filter((problem) => !problem.solvedByMe)
           .sort((a, b) => b.totalSolves - a.totalSolves);
-
+  
         const firstNext = unsolved[0] || null;
         const secondNext = unsolved[1] || null;
-
-        const formatProbName = (p) =>
-          p.title ? `Задача ${p.label} «${p.title}»` : `Задача ${p.label}`;
-
-        let recommendationHtml = "";
+  
+        const formatProblem = (problem) =>
+          problem.title
+            ? `Задача ${problem.label} «${problem.title}»`
+            : `Задача ${problem.label}`;
+  
+        let recommendation = "";
+  
         if (!firstNext) {
-          recommendationHtml = `
+          recommendation = `
             <div class="next-box">
               <div class="all-done">✓ Все задачи контеста решены!</div>
             </div>
           `;
         } else {
-          recommendationHtml = `
+          recommendation = `
             <div class="next-box">
               <div class="next-primary">
-                🎯 Следующая: ${formatProbName(firstNext)} — решили ${firstNext.totalSolves} чел.
+                🎯 Следующая: ${formatProblem(firstNext)} — решили ${firstNext.totalSolves} чел.
               </div>
               <div class="next-secondary">
                 ${
                   secondNext
-                    ? `После неё: ${formatProbName(secondNext)} (решили ${secondNext.totalSolves} чел.)`
-                    : `Это последняя нерешенная задача в контесте!`
+                    ? `После неё: ${formatProblem(secondNext)} (решили ${secondNext.totalSolves} чел.)`
+                    : "Это последняя нерешённая задача в контесте!"
                 }
               </div>
             </div>
           `;
         }
-
-        const pillsHtml = contest.problems
-          .map((p) => {
-            const isTarget = firstNext && p.label === firstNext.label && !p.solvedByMe;
-            let cls = "pill";
-            if (p.solvedByMe) cls += " ac";
-            else if (p.attemptedByMe) cls += " wa";
-            if (isTarget) cls += " next-target";
-
-            const tooltip = p.title ? `${p.label}: ${p.title}` : p.label;
-            return `<span class="${cls}" title="${tooltip}">${p.label} (${p.totalSolves})</span>`;
+  
+        const pills = contest.problems
+          .map((problem) => {
+            const isTarget =
+              firstNext &&
+              problem.label === firstNext.label &&
+              !problem.solvedByMe;
+  
+            let className = "pill";
+  
+            if (problem.solvedByMe) {
+              className += " ac";
+            } else if (problem.attemptedByMe) {
+              className += " wa";
+            }
+  
+            if (isTarget) {
+              className += " next-target";
+            }
+  
+            const tooltip = problem.title
+              ? `${problem.label}: ${problem.title}`
+              : problem.label;
+  
+            return `
+              <span class="${className}" title="${tooltip}">
+                ${problem.label} (${problem.totalSolves})
+              </span>
+            `;
           })
           .join("");
-
-        const ejudgeUrl = `https://ejudge.old.algocode.ru/cgi-bin/new-client?contest_id=${contest.contestId}`;
-
+  
+        const ejudgeUrl =
+          `https://ejudge.old.algocode.ru/cgi-bin/new-client?contest_id=${contest.contestId}`;
+  
         const card = document.createElement("div");
         card.className = "contest-card";
         card.innerHTML = `
@@ -562,49 +645,67 @@ if (fixedColsCount === 0) {
               <div class="contest-name">${contest.title}</div>
               <div class="contest-id-tag">Contest ID: ${contest.contestId}</div>
             </div>
-            <div class="contest-badge ${mySolvedProbs === totalProbs && totalProbs > 0 ? "done" : ""}">
-              ${mySolvedProbs} из ${totalProbs}
+  
+            <div class="contest-badge ${
+              totalProblems && solvedProblems === totalProblems ? "done" : ""
+            }">
+              ${solvedProblems} из ${totalProblems}
             </div>
           </div>
+  
           <div class="progress-track">
             <div class="progress-fill" style="width: ${percent}%"></div>
           </div>
-          ${recommendationHtml}
-          <div class="prob-pills">${pillsHtml}</div>
+  
+          ${recommendation}
+  
+          <div class="prob-pills">${pills}</div>
+  
           <a class="contest-link" href="${ejudgeUrl}" target="_blank" rel="noopener">
             Открыть контест #${contest.contestId} в ejudge →
           </a>
         `;
+  
         container.appendChild(card);
       });
     }
-
+  
     async function loadStandings() {
-      const statusEl = document.getElementById("statusText");
-      statusEl.textContent = "Обновление с algocode.ru...";
-
+      hideDebug();
+      setStatus("Обновление статистики...");
+  
       try {
-        const html = await fetchHtmlWithFallback(STANDINGS_URL);
-        const data = parseStandingsHtml(html);
-
+        const json = await fetchJson();
+  
+        setStatus("Разбираю JSON...");
+        const data = parseStandingsJson(json);
+  
         localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
         renderDashboard(data);
-
-        const timeStr = new Date().toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" });
-        statusEl.textContent = `Актуально на ${timeStr}`;
-      } catch (err) {
-        console.error(err);
-        statusEl.textContent = "Оффлайн-режим (показаны сохраненные данные)";
+  
+        const time = new Date().toLocaleTimeString("ru-RU", {
+          hour: "2-digit",
+          minute: "2-digit"
+        });
+  
+        setStatus(`Актуально на ${time}`);
+      } catch (error) {
+        console.error("Ошибка:", error);
+        setStatus("Не удалось обновить данные");
+        showDebug("Ошибка", error.message);
       }
     }
-
+  
     const cachedRaw = localStorage.getItem(STORAGE_KEY);
+  
     if (cachedRaw) {
       try {
         renderDashboard(JSON.parse(cachedRaw));
-      } catch (e) {}
+      } catch (error) {
+        console.warn("Не удалось показать кэш:", error);
+      }
     }
-
+  
     loadStandings();
   </script>
 </body>
