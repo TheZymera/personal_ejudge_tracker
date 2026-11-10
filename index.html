@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="theme-color" content="#0b0f19" />
+  <title>Algocode B — Статистика</title>
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --card: #151c2c;
+      --card-border: #232f46;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --purple: #c084fc;
+      --green: #22c55e;
+      --amber: #f59e0b;
+      --red: #ef4444;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 16px 14px 36px;
+      max-width: 540px;
+      margin: 0 auto;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+    .user-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+    .sub-status {
+      font-size: 0.76rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+    .btn {
+      background: var(--card);
+      color: var(--text);
+      border: 1px solid var(--card-border);
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn:active { transform: scale(0.96); }
+
+    /* 3 БОЛЬШИХ ЧИСЛА СВЕРХУ */
+    .hero-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+    .hero-card {
+      background: linear-gradient(160deg, #192338 0%, #111827 100%);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 16px 8px;
+      text-align: center;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    }
+    .hero-value {
+      font-size: 3.1rem;
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -1.5px;
+      margin-bottom: 6px;
+    }
+    .hero-value.rank { color: var(--accent); }
+    .hero-value.group-rank { color: var(--purple); }
+    .hero-value.solved { color: var(--green); }
+    .hero-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+    .hero-meta {
+      font-size: 0.68rem;
+      color: var(--muted);
+      margin-top: 5px;
+    }
+
+    .section-title {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      margin-bottom: 10px;
+    }
+
+    /* КАРТОЧКИ КОНТЕСТОВ */
+    .contest-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .contest-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 15px;
+    }
+    .contest-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .contest-name {
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+    .contest-id-tag {
+      font-size: 0.73rem;
+      color: var(--muted);
+      font-weight: 500;
+      margin-top: 2px;
+    }
+    .contest-badge {
+      background: rgba(56, 189, 248, 0.12);
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 4px 10px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+    .contest-badge.done {
+      background: rgba(34, 197, 94, 0.15);
+      color: var(--green);
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 7px;
+      background: #0b0f19;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--green));
+      border-radius: 999px;
+      transition: width 0.3s ease;
+    }
+
+    /* БЛОК РЕКОМЕНДАЦИИ ЗАДАЧИ */
+    .next-box {
+      background: rgba(11, 15, 25, 0.7);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 10px 12px;
+      margin-bottom: 12px;
+    }
+    .next-primary {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--amber);
+      line-height: 1.35;
+    }
+    .next-secondary {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 5px;
+      line-height: 1.3;
+    }
+    .all-done {
+      font-size: 0.88rem;
+      color: var(--green);
+      font-weight: 700;
+    }
+
+    /* ПЛИТКИ ЗАДАЧ */
+    .prob-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+    .pill {
+      font-size: 0.74rem;
+      font-weight: 700;
+      padding: 4px 7px;
+      border-radius: 6px;
+      background: #0b0f19;
+      color: var(--muted);
+      border: 1px solid var(--card-border);
+    }
+    .pill.ac {
+      background: rgba(34, 197, 94, 0.15);
+      color: var(--green);
+      border-color: rgba(34, 197, 94, 0.4);
+    }
+    .pill.wa {
+      background: rgba(239, 68, 68, 0.12);
+      color: #fca5a5;
+      border-color: rgba(239, 68, 68, 0.35);
+    }
+    .pill.next-target {
+      border-color: var(--amber);
+      color: var(--amber);
+      box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.25);
+    }
+
+    .contest-link {
+      display: block;
+      width: 100%;
+      text-align: center;
+      text-decoration: none;
+      background: rgba(56, 189, 248, 0.1);
+      color: var(--accent);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      padding: 9px 12px;
+      border-radius: 10px;
+      font-size: 0.84rem;
+      font-weight: 600;
+    }
+    .contest-link:active { opacity: 0.75; }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div>
+      <div class="user-title">Конников Вячеслав</div>
+      <div class="sub-status" id="statusText">Загрузка таблицы...</div>
+    </div>
+    <button class="btn" onclick="loadStandings()">↻ Обновить</button>
+  </div>
+
+  <!-- 3 БОЛЬШИХ ЧИСЛА -->
+  <div class="hero-grid">
+    <div class="hero-card">
+      <div class="hero-value rank" id="rankVal">31</div>
+      <div class="hero-label">Общее место</div>
+      <div class="hero-meta" id="totalUsersMeta">Из 330 чел.</div>
+    </div>
+    <div class="hero-card">
+      <div class="hero-value group-rank" id="groupRankVal">12</div>
+      <div class="hero-label" id="groupLabel">Место в гр. b</div>
+      <div class="hero-meta" id="groupUsersMeta">Из 262 чел.</div>
+    </div>
+    <div class="hero-card">
+      <div class="hero-value solved" id="solvedVal">45</div>
+      <div class="hero-label">Решено</div>
+      <div class="hero-meta" id="penaltyMeta">Штраф: 33</div>
+    </div>
+  </div>
+
+  <div class="section-title" id="contestsHeader">Контесты (6)</div>
+  <div class="contest-list" id="contestList"></div>
+
+  <script>
+    const TARGET_NAME = "Конников Вячеслав";
+    const STANDINGS_URL = "https://algocode.ru/standings/b_fall_2026/";
+    const BASE_CONTEST_ID = 83001; // ./0/ -> 83001, ./5/ -> 83006 и т.д.
+    const STORAGE_KEY = "algocode_b_fall_2026_cache_v2";
+
+    const PROXIES = [
+      (url) => `https://corsproxy.io/?url=${encodeURIComponent(url)}`,
+      (url) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+      (url) => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`
+    ];
+
+    async function fetchHtmlWithFallback(targetUrl) {
+      const bustUrl = targetUrl + (targetUrl.includes("?") ? "&" : "?") + "_t=" + Date.now();
+      for (const makeProxy of PROXIES) {
+        try {
+          const res = await fetch(makeProxy(bustUrl));
+          if (res.ok) {
+            const text = await res.text();
+            if (text.includes('id="standings"')) return text;
+          }
+        } catch (e) {
+          console.warn("Прокси не ответил, пробую следующий...", e);
+        }
+      }
+      throw new Error("Все CORS-прокси временно недоступны");
+    }
+
+    function parseStandingsHtml(html) {
+      const doc = new DOMParser().parseFromString(html, "text/html");
+      const mainTable = doc.querySelector("table#standings");
+      if (!mainTable) throw new Error("Таблица #standings не найдена");
+
+      const allRows = Array.from(mainTable.querySelectorAll("tr"));
+      const titleRowIdx = allRows.findIndex((tr) => tr.querySelector("td.contest_title"));
+      if (titleRowIdx === -1) throw new Error("Не найдена шапка контестов");
+
+      const headerRow0 = Array.from(allRows[titleRowIdx].querySelectorAll("td, th"));
+      const headerRow1 = Array.from(allRows[titleRowIdx + 1].querySelectorAll("td, th"));
+
+      let fixedColsCount = 0;
+      const rawContests = [];
+
+      for (const cell of headerRow0) {
+        if (cell.classList.contains("contest_title")) {
+          const colspan = parseInt(cell.getAttribute("colspan") || "1", 10);
+          const title = cell.textContent.replace(/\s+/g, " ").trim();
+          const href = cell.querySelector("a")?.getAttribute("href") || "";
+          const match = href.match(/\/(\d+)\/?/);
+          const contestNumber = match ? parseInt(match[1], 10) : null;
+
+          rawContests.push({
+            title,
+            colspan,
+            contestNumber
+          });
+        } else if (rawContests.length === 0) {
+          fixedColsCount += parseInt(cell.getAttribute("colspan") || "1", 10);
+        }
+      }
+
+      if (fixedColsCount === 0) fixedColsCount = 5;
+
+      const totalTaskCols = headerRow1.length;
+      const colMeta = headerRow1.map((cell) => {
+        const label = cell.textContent.trim();
+        const probTitle = (cell.getAttribute("title") || "").trim();
+        return {
+          label,
+          probTitle,
+          isSummary: label === "Σ"
+        };
+      });
+
+      const solvedCounts = new Array(totalTaskCols).fill(0);
+      const groupTotals = {};
+      let myStats = null;
+      let myCells = [];
+      let totalParticipants = 0;
+
+      for (const tr of allRows) {
+        if (tr.querySelector("td.contest_title") || tr.querySelector("td.problem_letter")) {
+          continue;
+        }
+        const cells = Array.from(tr.querySelectorAll("td"));
+        if (cells.length < fixedColsCount) continue;
+
+        const rankText = cells[0]?.textContent.trim();
+        if (!/^\d+$/.test(rankText)) continue;
+
+        totalParticipants++;
+
+        const group = cells[1]?.textContent.trim() || "?";
+        const name = cells[2]?.textContent.replace(/\s+/g, " ").trim();
+        const solved = cells[3]?.textContent.trim();
+        const penalty = cells[4]?.textContent.trim();
+
+        // Считаем сколько человек уже встретилось в каждой подгруппе (b / B)
+        groupTotals[group] = (groupTotals[group] || 0) + 1;
+
+        const isMe = name.toLowerCase().includes(TARGET_NAME.toLowerCase());
+        if (isMe) {
+          myStats = {
+            rank: rankText,
+            group,
+            groupRank: groupTotals[group], // Порядковый номер внутри своей группы
+            name,
+            solved,
+            penalty
+          };
+        }
+
+        for (let c = 0; c < totalTaskCols; c++) {
+          const td = cells[fixedColsCount + c];
+          if (!td) continue;
+          const isOk = td.classList.contains("ok");
+          if (isOk) solvedCounts[c]++;
+
+          if (isMe) {
+            myCells[c] = {
+              ok: isOk,
+              bad: td.classList.contains("bad") || td.classList.contains("ban"),
+              rawText: td.textContent.trim()
+            };
+          }
+        }
+      }
+
+      if (myStats) {
+        myStats.groupTotal = groupTotals[myStats.group] || 0;
+      }
+
+      const numContests = rawContests.length;
+      const contests = [];
+      let cursor = 0;
+
+      for (let i = 0; i < numContests; i++) {
+        const rc = rawContests[i];
+        const offset = rc.contestNumber !== null ? rc.contestNumber : (numContests - 1 - i);
+        const contestId = BASE_CONTEST_ID + offset;
+
+        const problems = [];
+        for (let k = 0; k < rc.colspan && cursor < totalTaskCols; k++, cursor++) {
+          const meta = colMeta[cursor];
+          if (meta.isSummary) continue;
+
+          const myCell = myCells[cursor] || { ok: false, bad: false, rawText: "" };
+          problems.push({
+            label: meta.label,
+            title: meta.probTitle,
+            solvedByMe: myCell.ok,
+            attemptedByMe: myCell.bad,
+            myText: myCell.rawText,
+            totalSolves: solvedCounts[cursor]
+          });
+        }
+
+        contests.push({
+          title: rc.title,
+          contestId,
+          problems
+        });
+      }
+
+      return { myStats, totalParticipants, contests, updatedAt: Date.now() };
+    }
+
+    function renderDashboard(data) {
+      if (data.myStats) {
+        document.getElementById("rankVal").textContent = data.myStats.rank;
+        document.getElementById("totalUsersMeta").textContent = `Из ${data.totalParticipants} чел.`;
+
+        document.getElementById("groupRankVal").textContent = data.myStats.groupRank || "-";
+        document.getElementById("groupLabel").textContent = `Место в гр. ${data.myStats.group}`;
+        document.getElementById("groupUsersMeta").textContent =
+          data.myStats.groupTotal ? `Из ${data.myStats.groupTotal} чел.` : "";
+
+        document.getElementById("solvedVal").textContent = data.myStats.solved;
+        document.getElementById("penaltyMeta").textContent = `Штраф: ${data.myStats.penalty}`;
+      }
+
+      const contests = data.contests || [];
+      document.getElementById("contestsHeader").textContent = `Контесты (${contests.length})`;
+
+      const container = document.getElementById("contestList");
+      container.innerHTML = "";
+
+      contests.forEach((contest) => {
+        const totalProbs = contest.problems.length;
+        const mySolvedProbs = contest.problems.filter((p) => p.solvedByMe).length;
+        const percent = totalProbs > 0 ? Math.round((mySolvedProbs / totalProbs) * 100) : 0;
+
+        const unsolved = contest.problems
+          .filter((p) => !p.solvedByMe)
+          .sort((a, b) => b.totalSolves - a.totalSolves);
+
+        const firstNext = unsolved[0] || null;
+        const secondNext = unsolved[1] || null;
+
+        const formatProbName = (p) =>
+          p.title ? `Задача ${p.label} «${p.title}»` : `Задача ${p.label}`;
+
+        let recommendationHtml = "";
+        if (!firstNext) {
+          recommendationHtml = `
+            <div class="next-box">
+              <div class="all-done">✓ Все задачи контеста решены!</div>
+            </div>
+          `;
+        } else {
+          recommendationHtml = `
+            <div class="next-box">
+              <div class="next-primary">
+                🎯 Следующая: ${formatProbName(firstNext)} — решили ${firstNext.totalSolves} чел.
+              </div>
+              <div class="next-secondary">
+                ${
+                  secondNext
+                    ? `После неё: ${formatProbName(secondNext)} (решили ${secondNext.totalSolves} чел.)`
+                    : `Это последняя нерешенная задача в контесте!`
+                }
+              </div>
+            </div>
+          `;
+        }
+
+        const pillsHtml = contest.problems
+          .map((p) => {
+            const isTarget = firstNext && p.label === firstNext.label && !p.solvedByMe;
+            let cls = "pill";
+            if (p.solvedByMe) cls += " ac";
+            else if (p.attemptedByMe) cls += " wa";
+            if (isTarget) cls += " next-target";
+
+            const tooltip = p.title ? `${p.label}: ${p.title}` : p.label;
+            return `<span class="${cls}" title="${tooltip}">${p.label} (${p.totalSolves})</span>`;
+          })
+          .join("");
+
+        const ejudgeUrl = `https://ejudge.old.algocode.ru/cgi-bin/new-client?contest_id=${contest.contestId}`;
+
+        const card = document.createElement("div");
+        card.className = "contest-card";
+        card.innerHTML = `
+          <div class="contest-top">
+            <div>
+              <div class="contest-name">${contest.title}</div>
+              <div class="contest-id-tag">Contest ID: ${contest.contestId}</div>
+            </div>
+            <div class="contest-badge ${mySolvedProbs === totalProbs && totalProbs > 0 ? "done" : ""}">
+              ${mySolvedProbs} из ${totalProbs}
+            </div>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" style="width: ${percent}%"></div>
+          </div>
+          ${recommendationHtml}
+          <div class="prob-pills">${pillsHtml}</div>
+          <a class="contest-link" href="${ejudgeUrl}" target="_blank" rel="noopener">
+            Открыть контест #${contest.contestId} в ejudge →
+          </a>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    async function loadStandings() {
+      const statusEl = document.getElementById("statusText");
+      statusEl.textContent = "Обновление с algocode.ru...";
+
+      try {
+        const html = await fetchHtmlWithFallback(STANDINGS_URL);
+        const data = parseStandingsHtml(html);
+
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        renderDashboard(data);
+
+        const timeStr = new Date().toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" });
+        statusEl.textContent = `Актуально на ${timeStr}`;
+      } catch (err) {
+        console.error(err);
+        statusEl.textContent = "Оффлайн-режим (показаны сохраненные данные)";
+      }
+    }
+
+    const cachedRaw = localStorage.getItem(STORAGE_KEY);
+    if (cachedRaw) {
+      try {
+        renderDashboard(JSON.parse(cachedRaw));
+      } catch (e) {}
+    }
+
+    loadStandings();
+  </script>
+</body>
+</html>
