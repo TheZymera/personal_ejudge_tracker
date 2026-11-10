@@ -276,26 +276,59 @@
     const STORAGE_KEY = "algocode_b_fall_2026_cache_v2";
 
     const PROXIES = [
-      (url) => `https://corsproxy.io/?url=${encodeURIComponent(url)}`,
-      (url) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
-      (url) => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`
-    ];
+  (url) => `https://corsproxy.io/?url=${encodeURIComponent(url)}`,
+  (url) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+  (url) => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,
+  (url) => `https://proxy.cors.sh/${url}`,
+  (url) => `https://thingproxy.freeboard.io/fetch/${url}`
+];
 
-    async function fetchHtmlWithFallback(targetUrl) {
-      const bustUrl = targetUrl + (targetUrl.includes("?") ? "&" : "?") + "_t=" + Date.now();
-      for (const makeProxy of PROXIES) {
-        try {
-          const res = await fetch(makeProxy(bustUrl));
-          if (res.ok) {
-            const text = await res.text();
-            if (text.includes('id="standings"')) return text;
-          }
-        } catch (e) {
-          console.warn("Прокси не ответил, пробую следующий...", e);
-        }
-      }
-      throw new Error("Все CORS-прокси временно недоступны");
+async function fetchWithTimeout(url, timeoutMs = 12000) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+
+  try {
+    const res = await fetch(url, {
+      signal: controller.signal,
+      cache: "no-store"
+    });
+
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status}`);
     }
+
+    return await res.text();
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function fetchHtmlWithFallback(targetUrl) {
+  const bustUrl = targetUrl + (targetUrl.includes("?") ? "&" : "?") + "_t=" + Date.now();
+  const errors = [];
+
+  for (const makeProxy of PROXIES) {
+    const proxyUrl = makeProxy(bustUrl);
+
+    try {
+      const text = await fetchWithTimeout(proxyUrl);
+
+      if (text && text.includes("standings")) {
+        return text;
+      }
+
+      errors.push(new Error("Пустой/неподходящий ответ от прокси"));
+    } catch (e) {
+      console.warn("Прокси не ответил:", proxyUrl, e);
+      errors.push(e);
+    }
+  }
+
+  throw new Error(
+    "Не удалось получить таблицу через прокси. " +
+    errors.map((e) => e.message).join(" | ")
+  );
+}
 
     function parseStandingsHtml(html) {
       const doc = new DOMParser().parseFromString(html, "text/html");
@@ -307,30 +340,40 @@
       if (titleRowIdx === -1) throw new Error("Не найдена шапка контестов");
 
       const headerRow0 = Array.from(allRows[titleRowIdx].querySelectorAll("td, th"));
-      const headerRow1 = Array.from(allRows[titleRowIdx + 1].querySelectorAll("td, th"));
+const headerRow1 = Array.from(allRows[titleRowIdx + 1]?.querySelectorAll("td, th") || []);
 
-      let fixedColsCount = 0;
-      const rawContests = [];
+let fixedColsCount = 0;
+let seenContest = false;
+const rawContests = [];
 
-      for (const cell of headerRow0) {
-        if (cell.classList.contains("contest_title")) {
-          const colspan = parseInt(cell.getAttribute("colspan") || "1", 10);
-          const title = cell.textContent.replace(/\s+/g, " ").trim();
-          const href = cell.querySelector("a")?.getAttribute("href") || "";
-          const match = href.match(/\/(\d+)\/?/);
-          const contestNumber = match ? parseInt(match[1], 10) : null;
+for (const cell of headerRow0) {
+  const colspan = parseInt(cell.getAttribute("colspan") || "1", 10) || 1;
 
-          rawContests.push({
-            title,
-            colspan,
-            contestNumber
-          });
-        } else if (rawContests.length === 0) {
-          fixedColsCount += parseInt(cell.getAttribute("colspan") || "1", 10);
-        }
-      }
+  if (cell.classList.contains("contest_title")) {
+    seenContest = true;
 
-      if (fixedColsCount === 0) fixedColsCount = 5;
+    const title = cell.textContent.replace(/\s+/g, " ").trim();
+    const href = cell.querySelector("a")?.getAttribute("href") || "";
+    const match = href.match(/(\d{4,})\/?$/);
+    const contestNumber = match ? parseInt(match[1], 10) : null;
+
+    rawContests.push({
+      title,
+      colspan,
+      contestNumber
+    });
+  } else if (!seenContest) {
+    fixedColsCount += colspan;
+  }
+}
+
+if (!rawContests.length) {
+  throw new Error("Не найдены контесты в шапке таблицы");
+}
+
+if (fixedColsCount === 0) {
+  fixedColsCount = 5;
+}
 
       const totalTaskCols = headerRow1.length;
       const colMeta = headerRow1.map((cell) => {
@@ -407,8 +450,9 @@
 
       for (let i = 0; i < numContests; i++) {
         const rc = rawContests[i];
-        const offset = rc.contestNumber !== null ? rc.contestNumber : (numContests - 1 - i);
-        const contestId = BASE_CONTEST_ID + offset;
+        const contestId = rc.contestNumber !== null
+        ? rc.contestNumber
+        : BASE_CONTEST_ID + (numContests - 1 - i);
 
         const problems = [];
         for (let k = 0; k < rc.colspan && cursor < totalTaskCols; k++, cursor++) {
